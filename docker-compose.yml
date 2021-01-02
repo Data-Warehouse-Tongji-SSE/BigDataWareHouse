@@ -13,10 +13,10 @@ services:
         volumes:
             - ./neo4j/conf:/conf
             - ./neo4j/data:/data
-            - ./ETL/processedData/mysqlData/:/import
+            - ./neo4j/root_import:/import
             - ./neo4j/logs:/logs
             - ./neo4j/plugins:/plugins
-            - ./ETL/load/mysqlLoad:/import/load
+            - ./neo4j/import:/var/lib/neo4j/import
         environment:
             # Raise memory limits
             - NEO4J_dbms_memory_pagecache_size=1G
@@ -63,6 +63,8 @@ services:
             - "50075:50075"
     hive-server:
         image: bde2020/hive:2.3.2-postgresql-metastore
+        volumes:
+            - ./hive/local_data:/hadoop-data  
         env_file:
             - ./hivescript/hadoop-hive.env
         environment:
